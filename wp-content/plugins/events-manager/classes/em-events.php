@@ -30,10 +30,10 @@ class EM_Events extends EM_Object {
 		}
 		
 		//We assume it's either an empty array or array of search arguments to merge with defaults			
-		$args = self::get_default_search($args);
-		$limit = ( $args['limit'] && is_numeric($args['limit'])) ? "LIMIT {$args['limit']}" : '';
-		$offset = ( $limit != "" && is_numeric($args['offset']) ) ? "OFFSET {$args['offset']}" : '';
-		$groupby_sql = '';
+		$args        = self::get_default_search($args);
+		$limit       = ( $args['limit'] && is_numeric($args['limit'])) ? "LIMIT {$args['limit']}" : '';
+		$offset      = ( $limit != "" && is_numeric($args['offset']) ) ? "OFFSET {$args['offset']}" : '';
+        $groupby_sql = [];
 		
 		//Get the default conditions
 		$conditions = self::build_sql_conditions($args);
