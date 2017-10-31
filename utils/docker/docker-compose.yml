@@ -1,0 +1,78 @@
+version: "2"
+services:
+    mysql:
+      image: mysql:5.7
+      container_name: ${PROJECT}-mysql
+      #working_dir: /application
+      volumes:
+        - ./data/mysql:/var/lib/mysql
+      restart: always
+      environment:
+        - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+        - MYSQL_DATABASE=${MYSQL_DATABASE}
+        - MYSQL_USER=${MYSQL_USER}
+        - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      networks:
+        - default
+
+    webserver:
+      image: httpd:2.4
+      container_name: ${PROJECT}-webserver
+      volumes:
+          - ../../.:/usr/local/apache2/htdocs/
+          - ./httpd/httpd.conf:/usr/local/apache2/conf/httpd.conf
+      restart: always
+      links:
+        - php-fpm
+      networks:
+        - default
+      environment:
+        - VIRTUAL_HOST=${VIRTUAL_HOST}
+        - LETSENCRYPT_HOST=${VIRTUAL_HOST}
+        - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
+
+
+    php-fpm:
+      build: php-fpm
+      container_name: ${PROJECT}-php-fpm
+      working_dir: /www
+      restart: always
+      volumes:
+        - ../../.:/www
+        - ./php-fpm/php.ini:/usr/local/etc/php/php.ini
+      networks:
+        - default
+      links:
+        - mysql
+
+    wp-cli:
+      build: php-cli
+      container_name: ${PROJECT}-php-cli
+      working_dir: /www
+      volumes:
+        - ../../.:/www
+      networks:
+        - default
+      links:
+        - mysql
+
+    phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      container_name: ${PROJECT}-phpmyadmin
+      environment:
+        - VIRTUAL_HOST=pma.${VIRTUAL_HOST}
+        - LETSENCRYPT_HOST=pma.${VIRTUAL_HOST}
+        - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
+        - PMA_HOST=mysql
+      restart: always
+      networks:
+        - default
+      volumes:
+        - /sessions
+      links:
+        - mysql
+
+networks:
+  default:
+    external:
+      name: ${NETWORK_DEFAULT}

@@ -1,0 +1,22 @@
+/*
+ Theme Name:   Athena Child
+ Description:  Athena Child Theme
+ Author:       Florentin Garnier
+ Author URI:   http://florentingarnier.fr
+ Template:     athena
+ Version:      0.0.1
+ License:      GNU General Public License v2 or later
+ License URI:  http://www.gnu.org/licenses/gpl-2.0.html
+ Tags:         
+ Text Domain:  athena-child
+*/
+
+.events-table>tbody>tr:hover{
+	background-color: #e6e6e6;
+}
+
+
+.clear
+{
+    margin-top: 100px;
+}
