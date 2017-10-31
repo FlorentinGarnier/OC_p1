@@ -49,6 +49,7 @@ services:
       build: php-cli
       container_name: ${PROJECT}-php-cli
       working_dir: /www
+      user: www-data
       volumes:
         - ../../.:/www
       networks:
