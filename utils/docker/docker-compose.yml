@@ -2,7 +2,7 @@ version: "2"
 services:
     mysql:
       image: mysql:5.7
-      container_name: ${PROJECT}-mysql
+      container_name: ${COMPOSE_PROJECT_NAME}-mysql
       #working_dir: /application
       volumes:
         - ./data/mysql:/var/lib/mysql
@@ -17,7 +17,7 @@ services:
 
     webserver:
       image: httpd:2.4
-      container_name: ${PROJECT}-webserver
+      container_name: ${COMPOSE_PROJECT_NAME}-webserver
       volumes:
           - ../../.:/usr/local/apache2/htdocs/
           - ./httpd/httpd.conf:/usr/local/apache2/conf/httpd.conf
@@ -34,7 +34,7 @@ services:
 
     php-fpm:
       build: php-fpm
-      container_name: ${PROJECT}-php-fpm
+      container_name: ${COMPOSE_PROJECT_NAME}-php-fpm
       working_dir: /www
       restart: always
       volumes:
@@ -47,7 +47,7 @@ services:
 
     wp-cli:
       build: php-cli
-      container_name: ${PROJECT}-php-cli
+      container_name: ${COMPOSE_PROJECT_NAME}-php-cli
       working_dir: /www
       user: www-data
       volumes:
@@ -59,7 +59,7 @@ services:
 
     phpmyadmin:
       image: phpmyadmin/phpmyadmin
-      container_name: ${PROJECT}-phpmyadmin
+      container_name: ${COMPOSE_PROJECT_NAME}-phpmyadmin
       environment:
         - VIRTUAL_HOST=pma.${VIRTUAL_HOST}
         - LETSENCRYPT_HOST=pma.${VIRTUAL_HOST}
